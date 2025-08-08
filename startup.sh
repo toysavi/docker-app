@@ -148,15 +148,21 @@ def index():
         }
 
     # --- 3. Get Swarm Info ---
-    swarm_status = docker_info.get('Swarm', {}).get('LocalNodeState', 'N/A')
+    swarm_info_data = docker_info.get('Swarm', {})
+    swarm_status = swarm_info_data.get('LocalNodeState', 'N/A')
+
     if swarm_status == 'inactive':
         node_type = 'Standalone Node'
         node_role = 'N/A (Not in a Swarm)'
     else:
         node_type = 'Cluster (Swarm Mode)'
-        # Check if the node is a manager to provide a more specific role.
-        if docker_info.get('Swarm', {}).get('ManagerStatus'):
-            node_role = 'Manager'
+        manager_status = swarm_info_data.get('ManagerStatus')
+        # A more robust check: first see if it's a manager, then check if it's a leader.
+        if manager_status:
+            if manager_status.get('Leader'):
+                node_role = 'Leader'
+            else:
+                node_role = 'Manager'
         elif swarm_status == 'active':
             node_role = 'Worker'
         else:
