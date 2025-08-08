@@ -2,6 +2,14 @@
 
 This is a simple Flask web application that runs inside a Docker container. It displays information about the Docker host and the container itself, including details about Docker Swarm if the host is part of a cluster.
 
+---
+
+## 📷 Preview
+![Docker Info Web App Screenshot](images/screenshot.png)
+
+---
+
+
 ## Prerequisites
 
 * Docker installed on your system.
