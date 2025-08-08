@@ -1,33 +1,26 @@
-# Dockerfile for full stack: React frontend + Flask backend (no Docker Compose)
+#
+# --- Dockerfile ---
+# This file is used to build the Docker image.
+#
+# A Python 3.10 base image is a good choice for running a Flask app.
+FROM python:3.10-alpine
 
-# ----------- Build frontend -----------
-FROM node:18 as frontend-builder
-WORKDIR /app/frontend
-COPY frontend/package*.json ./
-RUN npm install
-COPY frontend .
-RUN npm run build
+# Set the working directory inside the container.
+WORKDIR /app
 
-# ----------- Build backend -----------
-FROM python:3.11-slim as backend-builder
-WORKDIR /app/backend
-COPY backend/app.py ./
-RUN pip install flask docker
+# Install cURL, jq, and bash.
+RUN apk add --no-cache curl jq bash
 
-# ----------- Combine everything -----------
-FROM nginx:alpine
-# Copy frontend build to nginx
-COPY --from=frontend-builder /app/frontend/build /usr/share/nginx/html
-# Replace default nginx config
-COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
+# Copy the requirements file and install the Python dependencies.
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
-# Copy backend to /app/backend
-COPY --from=backend-builder /app/backend /app/backend
-# Add a start script
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
+# Copy the application files into the container.
+COPY . .
 
-# Backend runs on port 5000, frontend on 80
-EXPOSE 80 5000
+# Expose port 5000, which is the default port for the Flask development server.
+EXPOSE 5000
 
-CMD ["/start.sh"]
+# The CMD instruction passes the entrypoint script to the bash interpreter.
+# This is a robust way to avoid line-ending issues on the script itself.
+CMD ["/bin/bash", "entrypoint.sh"]
