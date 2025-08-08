@@ -60,19 +60,19 @@ For a more streamlined workflow, you can use a `docker-compose.yml` file. This f
 
 First, create a `docker-compose.yml` file in the root of your project:
 
-docker-compose.yml
 ````
+# docker-compose.yml
 version: '3.8'
 
 services:
-web:
-build: .
-image: my-docker-info-web-app
-volumes:
-- /var/run/docker.sock:/var/run/docker.sock
-ports:
-- "8000:5000"
-restart: on-failure
+  web:
+    build: .
+    image: my-docker-info-web-app
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8000:5000"
+    restart: on-failure
 ````
 
 
