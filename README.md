@@ -62,12 +62,10 @@ First, create a `docker-compose.yml` file in the root of your project:
 
 ````
 # docker-compose.yml
-version: '3.8'
-
 services:
   web:
     build: .
-    image: my-docker-info-web-app
+    image: docker-info-app
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
