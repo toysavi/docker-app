@@ -2,7 +2,7 @@
 services:
   web:
     build: .
-    image: docker-info-app
+    image: docker-app
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:

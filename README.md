@@ -30,10 +30,10 @@ This is a simple Flask web application that runs inside a Docker container. It d
 
 ### 1. Build the Docker Image
 
-Navigate to the project directory in your terminal and run the following command to build the Docker image. The image will be tagged as `my-docker-info-web-app`.
+Navigate to the project directory in your terminal and run the following command to build the Docker image. The image will be tagged as `docker-app`.
 
 ````
-docker build -t docker-info-app .
+docker build -t docker-app .
 ````
 
 ### 2. Run the Container
@@ -41,7 +41,7 @@ docker build -t docker-info-app .
 To run the container, you **must** mount the Docker socket from your host machine. This allows the application inside the container to communicate with the Docker daemon on the host and retrieve information.
 
 `````
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -p 8000:5000 docker-info-app
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -p 8000:5000 docker-app
 
 `````
 
@@ -65,7 +65,7 @@ First, create a `docker-compose.yml` file in the root of your project:
 services:
   web:
     build: .
-    image: docker-info-app
+    image: docker-app
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
